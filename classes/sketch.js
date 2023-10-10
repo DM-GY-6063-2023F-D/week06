@@ -8,7 +8,7 @@ function setup() {
       x: 0,
       y: random(30, height - 30),
       v: random(2, 4),
-      d: random(30, 80),
+      r: random(15, 40),
     };
     circles.push(myObject);
   }
@@ -22,13 +22,13 @@ function draw() {
     let myObject = circles[i];
 
     // draw circles
-    ellipse(myObject.x, myObject.y, myObject.d, myObject.d);
+    ellipse(myObject.x, myObject.y, 2 * myObject.r, 2 * myObject.r);
     myObject.x += myObject.v;
 
     // if reset is needed: pick random diameter and reset x
-    if (myObject.x > width + myObject.d) {
-      myObject.d = random(20, 75);
-      myObject.x = 0 - myObject.d;
+    if (myObject.x > width + myObject.r) {
+      myObject.r = random(15, 40);
+      myObject.x = 0 - myObject.r;
     }
   }
 }
