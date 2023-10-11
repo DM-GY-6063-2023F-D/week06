@@ -1,5 +1,7 @@
 # Week 06
 
-### Classes:
+### Functions with functions:
+Example that shows how to call array functions that take other functions as parameters.
 
-### Strings:
+### Classes:
+Turning our JavaScript objects into class instances.
