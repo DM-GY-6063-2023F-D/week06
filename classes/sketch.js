@@ -1,34 +1,100 @@
-let circles = [];
-let numCircles = 16;
+class Asteroid {
+  constructor() {
+    this.x = 0;
+    this.y = random(30, height - 30);
+    this.v = random(2, 4);
+    this.r = random(15, 40);
+  }
 
-function setup() {
-  createCanvas(800, 600);
-  for (let i = 0; i < numCircles; i++) {
-    let myObject = {
-      x: 0,
-      y: random(30, height - 30),
-      v: random(2, 4),
-      r: random(15, 40),
-    };
-    circles.push(myObject);
+  update() {
+    this.x += this.v;
+
+    if (this.x > width + this.r) {
+      this.r = random(15, 40);
+      this.x = 0 - this.r;
+    }
+  }
+
+  draw() {
+    fill(80);
+    stroke(0);
+    ellipse(this.x, this.y, 2 * this.r, 2 * this.r);
   }
 }
 
-function draw() {
-  background("lightblue");
-  fill(220, 10, 100);
+class Spaceship {
+  constructor(_color) {
+    this.x = random(0, width);
+    this.y = random(0, height);
+    this.vx = random(-5, 5);
+    this.vy = random(-5, 5);
+    this.color = _color;
+  }
 
-  for (let i = 0; i < circles.length; i += 1) {
-    let myObject = circles[i];
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
 
-    // draw circles
-    ellipse(myObject.x, myObject.y, 2 * myObject.r, 2 * myObject.r);
-    myObject.x += myObject.v;
-
-    // if reset is needed: pick random diameter and reset x
-    if (myObject.x > width + myObject.r) {
-      myObject.r = random(15, 40);
-      myObject.x = 0 - myObject.r;
+    if (this.x < 0) {
+      this.x += width;
+      this.vx = random(-2, 2);
     }
+    if (this.x > width) {
+      this.x -= width;
+      this.vx = random(-2, 2);
+    }
+
+    if (this.y < 0) {
+      this.y += height;
+      this.vy = random(-2, 2);
+    }
+    if (this.y > height) {
+      this.y -= height;
+      this.vy = random(-2, 2);
+    }
+  }
+
+  draw() {
+    noStroke();
+    fill(this.color);
+    let rotAngle = atan2(this.vy, this.vx);
+
+    push();
+    translate(this.x, this.y);
+    rotate(rotAngle);
+    triangle(-40, -20, -40, 20, 40, 0);
+    pop();
+  }
+}
+
+let asteroidArray = [];
+let maxAsteroids = 32;
+
+let spaceshipArray = [];
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+
+  for (let i = 0; i < maxAsteroids; i++) {
+    asteroidArray.push(new Asteroid());
+  }
+
+  spaceshipArray.push(new Spaceship("steelblue"));
+  spaceshipArray.push(new Spaceship("silver"));
+}
+
+function draw() {
+  background(0);
+
+  for (let i = 0; i < asteroidArray.length; i += 1) {
+    let anAsteroid = asteroidArray[i];
+    anAsteroid.update();
+    anAsteroid.draw();
+  }
+
+  for (let i = 0; i < spaceshipArray.length; i += 1) {
+    let aSpaceShip = spaceshipArray[i];
+    aSpaceShip.update();
+    aSpaceShip.draw();
   }
 }
