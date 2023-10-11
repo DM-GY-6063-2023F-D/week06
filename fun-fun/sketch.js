@@ -2,7 +2,7 @@ let circles = [];
 let numCircles = 16;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
 
   for (let i = 0; i < numCircles; i++) {
     let myObject = {
